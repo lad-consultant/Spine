@@ -1,0 +1,51 @@
+﻿@using TheSpine.Application.Features.Commands.Nodes;
+@{
+    Func<bool, string> visibility = isVisible => isVisible ? "block" : "none";
+}
+<MudDropContainer @ref="nodeDropContainer" T="NodeViewModel" Items="NodesResponse.NodesHierarchy.OrderBy(x => x.OrderingIndex)" ItemsSelector="@((item,dropzone) => item.Title != "" && dropzone == DropZone)" ItemDropped="NodeDropped" ItemIsDisabled="IsDragAndDropDisabled" Context="dropContainerContext" CanDrop="CanDrop">
+    <ChildContent>
+        <MudDropZone T="NodeViewModel" Identifier=@DropZone AllowReorder="true" />
+    </ChildContent>
+    <ItemRenderer>
+        @if (dropContainerContext.Data.NodesHierarchy.Any())
+        {
+            <MudTreeViewItem @ref="nodeTreeViewItem" Value=dropContainerContext Style="@($"display: {visibility(dropContainerContext.IsVisible)}")" Expanded=dropContainerContext.IsExpanded ExpandedChanged="(x => NodeExpandedChangedEvent(dropContainerContext, x))">
+                <ChildContent>
+                    <NodeTreeViewItem 
+                        NodesResponse=dropContainerContext.Data 
+                        Id="@dropContainerContext.Id" 
+                        DropZone="@dropContainerContext.Id.ToString()" 
+                        Parent="this"
+                        OnTreeViewItemRenderedEventCallback="AddTreeViewItem"
+                        OnTreeViewUpdatedEventCallback="OnTreeViewUpdatedEvent"
+                        OnTreeViewItemExpandedChangedEventCallback="NodeExpandedChangedEventWrapper"></NodeTreeViewItem>
+                </ChildContent>
+                <BodyContent>
+                    <TreeViewItemBody 
+                        Context="dropContainerContext" 
+                        OnAddEventCallback="AddNode" 
+                        OnEditEventCallback="EditNode" 
+                        OnDeleteEventCallback="DeleteNode" 
+                        OnMouseDownCallback="OnMouseDownHandler"/>
+                </BodyContent>
+            </MudTreeViewItem>
+
+            AddTreeViewItem(nodeTreeViewItem);
+        }
+        else
+        {
+            <MudTreeViewItem @ref="nodeTreeViewItem" Value=dropContainerContext Style="@($"display: {visibility(dropContainerContext.IsVisible)}")">
+                <BodyContent>
+                    <TreeViewItemBody 
+                        Context="dropContainerContext"
+                        OnAddEventCallback="AddNode"
+                        OnEditEventCallback="EditNode"
+                        OnDeleteEventCallback="DeleteNode"
+                        OnMouseDownCallback="OnMouseDownHandler"/>
+                </BodyContent>
+            </MudTreeViewItem>
+
+            AddTreeViewItem(nodeTreeViewItem);
+        }
+    </ItemRenderer>
+</MudDropContainer>

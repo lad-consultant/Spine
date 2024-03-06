@@ -1,0 +1,35 @@
+﻿@if (isLoading)
+{
+    <AuthorizeView Roles="@Roles.Moderator">
+        <MudPaper Class="pa-2 mb-3">
+            <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="35px" />
+        </MudPaper>
+    </AuthorizeView>
+    <MudPaper Class="pa-2 treeview">
+        <TreeSkeleton />
+    </MudPaper>
+}
+else
+{
+    <AuthorizeView Roles="@Roles.Moderator">
+        <MudPaper Class="pa-2 mb-3">
+            <MudStack Row="true" Class="justify-end">
+                <MudButton OnClick="AddRoot" Variant="Variant.Filled" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.Add">Add new node</MudButton>
+            </MudStack>
+        </MudPaper>
+    </AuthorizeView>
+
+    <MudPaper Class="pt-1 pr-1 treeview-container">
+        <MudStack Spacing="1">
+            <MudTreeView @ref="mudTreeView" Dense="true" Color="Color.Success" T="NodeViewModel" Hover="true" Class="mt-2 treeview" SelectedValueChanged="SelectedNodeChangedAsync">
+                <NodeTreeViewItem 
+                    @ref="nodeTreeViewItem" 
+                    NodesResponse=nodesResponse 
+                    DropZone="Roots" 
+                    OnTreeViewItemRenderedEventCallback="OnTreeViewItemRenderedEvent" 
+                    OnTreeViewUpdatedEventCallback="OnTreeViewUpdatedEvent"
+                    OnTreeViewItemExpandedChangedEventCallback="NodeExpandedChanged"></NodeTreeViewItem>
+            </MudTreeView>
+        </MudStack>
+    </MudPaper>
+}

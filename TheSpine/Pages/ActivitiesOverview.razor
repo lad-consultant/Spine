@@ -1,0 +1,32 @@
+﻿@page "/activities"
+@using TheSpine.Application.Features.Commands.Activities;
+
+@attribute [Authorize(Roles = Roles.Moderator)]
+
+<MudTable @ref="table" ServerData="@(new Func<TableState, Task<TableData<ActivityViewModel>>>(LoadData))" Dense="true" Hover="true">
+	<ToolBarContent>
+        <MudText Typo="Typo.h6">User activities</MudText>
+        <MudSpacer />
+        <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh><MudTableSortLabel SortLabel="@UserIdSortLabel" T="ActivityViewModel">User Id</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="@DescriptionSortLabel" T="ActivityViewModel">Description</MudTableSortLabel></MudTh>
+        <MudTh><MudTableSortLabel SortLabel="@TimestampSortLabel" T="ActivityViewModel">Timestamp</MudTableSortLabel></MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="UserId">@context.UserId</MudTd>
+        <MudTd DataLabel="Description">@context.Description</MudTd>
+        <MudTd DataLabel="Timestamp">@context.Timestamp</MudTd>
+    </RowTemplate>
+    <NoRecordsContent>
+        <MudText>No matching records found</MudText>
+    </NoRecordsContent>
+    <LoadingContent>
+        <MudText>Loading...</MudText>
+    </LoadingContent>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>

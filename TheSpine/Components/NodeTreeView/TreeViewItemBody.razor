@@ -1,0 +1,27 @@
+﻿<div style="display: grid; grid-template-columns: 1fr auto; align-items: center; width: 100%" @onmousedown="OnMouseDown">
+    <MudText Class="pa-1">@Context.Title</MudText>
+    <AuthorizeView Roles="@Roles.Moderator">
+        
+            <MudMenu Icon="@Icons.Material.Filled.MoreVert" AnchorOrigin="Origin.TopRight">
+                <MudMenuItem OnClick="(() => AddNode(Context.Id))">
+                    <MudStack Row=true Class="align-center">
+                        <MudIcon Icon="@Icons.Filled.Add" Size="@Size.Small"></MudIcon>
+                        <MudText>Add</MudText>
+                    </MudStack>
+                </MudMenuItem>
+                <MudMenuItem OnClick="(() => EditNode(Context))">
+                    <MudStack Row=true Class="align-center">
+                        <MudIcon Icon="@Icons.Filled.Edit" Size="@Size.Small"></MudIcon>
+                        <MudText>Edit</MudText>
+                    </MudStack>
+                </MudMenuItem>
+                <MudMenuItem OnClick="(() => DeleteNode(Context))">
+                    <MudStack Row=true Class="align-center">
+                        <MudIcon Icon="@Icons.Filled.Delete" Size="@Size.Small"></MudIcon>
+                        <MudText>Delete</MudText>
+                    </MudStack>
+                </MudMenuItem>
+            </MudMenu>
+
+    </AuthorizeView>
+</div>

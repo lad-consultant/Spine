@@ -1,0 +1,39 @@
+﻿<AuthorizeView Roles="@Roles.Moderator">
+    <Authorized>
+        <MudDialog>
+            <DialogContent>
+                <MudForm Model="@SegmentItemViewModel" @ref="form" Validation="@(validator.ValidateModel)" ValidationDelay="0">
+                    <MudTextField T="string" Variant="Variant.Outlined" @bind-Value="@SegmentItemViewModel.Title" Label="Title" For="@(() => SegmentItemViewModel.Title)" Immediate="true" />
+                    <MudField Variant="Variant.Outlined" Label="Rating">
+                        <MudRating @bind-SelectedValue="SegmentItemViewModel.Rating" />
+                    </MudField>
+                    <MudStack Row="true">
+                        <MudSelect @bind-Value="@SegmentItemViewModel.Segment" Variant="Variant.Outlined" T="SegmentViewModel" Placeholder="Category" Label="Category" AnchorOrigin="Origin.BottomCenter" ToStringFunc="@segmentConverter" For="@(() => SegmentItemViewModel.Segment)" Immediate="true">
+                            @foreach (var segment in segments)
+                            {
+                                <MudSelectItem Value="@segment" />
+                            }
+                        </MudSelect>
+                        <MudSelect @bind-Value="@SegmentItemViewModel.EaseOfUse" Variant="Variant.Outlined" T="EaseOfUse?" Placeholder="Ease of use" Label="Ease of use" AnchorOrigin="Origin.BottomCenter" ToStringFunc="@easeOfUseConverter" For="@(() => SegmentItemViewModel.EaseOfUse)" Immediate="true">
+                            @foreach (var grade in easeOfUseGrades)
+                            {
+                                <MudSelectItem Value="@grade" />
+                            }
+                        </MudSelect>
+                    </MudStack>
+
+                    <MudTextField T="string" Variant="Variant.Outlined" @bind-Value="@SegmentItemViewModel.Licensing" Label="Licensing" For="@(() => SegmentItemViewModel.Licensing)" Immediate="true" />
+                    <MudTextField T="string" Variant="Variant.Outlined" @bind-Value="@SegmentItemViewModel.Differentiator" Label="Differentiator" Lines="3" For="@(() => SegmentItemViewModel.Differentiator)" Immediate="true" />
+                    <MudTextField T="string" Variant="Variant.Outlined" @bind-Value="@SegmentItemViewModel.Notes" Label="Notes" Lines="3" For="@(() => SegmentItemViewModel.Notes)" Immediate="true" />
+                </MudForm>
+            </DialogContent>
+            <DialogActions>
+                <MudButton OnClick="Cancel">Cancel</MudButton>
+                <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+            </DialogActions>
+        </MudDialog>
+    </Authorized>
+    <NotAuthorized>
+        <MudText Align="Align.Center" Typo="Typo.h4">You are not authorized.</MudText>
+    </NotAuthorized>
+</AuthorizeView>

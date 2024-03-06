@@ -1,0 +1,28 @@
+﻿@using TheSpine.Application.Features.Queries.Search;
+
+<MudItem xs="12" Class="py-2">
+    <MudPaper>
+        <MudAutocomplete T="SearchViewModel" SearchFunc="@Search"
+                         ResetValueOnEmptyText="false"
+                         DebounceInterval="300"
+                         Placeholder="Quick Search"
+                         ToStringFunc="@ToStringSearchItem"
+                         AdornmentIcon="@Icons.Material.Filled.Search"
+                         MinCharacters="3"
+                         SelectOnClick="true"
+                         ValueChanged="@OnValueChanged"
+                         Variant="Variant.Outlined">
+            <NoItemsTemplate>
+                <MudText Class="pa-1">No results found</MudText>
+            </NoItemsTemplate>
+            <ItemTemplate>
+                <MudText Typo="Typo.body1" Style="font-weight: bold">
+                    @context.Title
+                </MudText>
+                <MudText Typo="Typo.body2">
+                    @(context.Description.Length > 50 ? context.Description.Substring(0, 80) + "..." : context.Description)
+                </MudText>
+            </ItemTemplate>
+        </MudAutocomplete>
+    </MudPaper>
+</MudItem>

@@ -1,0 +1,40 @@
+﻿<AuthorizeView Roles="@Roles.Moderator">
+    <Authorized>
+        <MudOverlay Visible="@loading" DarkBackground="true" Absolute="true">
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+        </MudOverlay>
+        <MudDialog>
+            <DialogContent>
+                @if (segments.Any())
+                {
+                    <MudList >
+                        @foreach(var segment in segments)
+                        {
+                            <MudListItem>
+                                <MudStack Row="true">
+                                    <MudGrid Class="align-center">
+                                        <MudItem xs="10">
+                                            @segment.Title
+                                        </MudItem>
+                                        <MudItem xs="2" Class="d-flex justify-end flex-grow-1 gap-1">
+                                            <MudIconButton @onclick="@(()=>EditSegment(@segment))" Color="Color.Primary" Icon="@Icons.Material.Filled.Edit" />
+                                            <MudIconButton @onclick="@(()=>DeleteSegment(@segment))" Color="Color.Secondary" Icon="@Icons.Material.Filled.Delete" />
+                                        </MudItem>
+                                    </MudGrid>
+                                </MudStack>
+                            </MudListItem>
+                            <MudDivider />
+                        }
+                    </MudList>
+                }
+            </DialogContent>
+            <DialogActions>
+                <MudButton OnClick="Close">Close</MudButton>
+                <MudButton Color="Color.Tertiary" OnClick="AddNewSegment">Add new</MudButton>
+            </DialogActions>
+        </MudDialog>
+    </Authorized>
+    <NotAuthorized>
+        <MudText Align="Align.Center" Typo="Typo.h4">You are not authorized.</MudText>
+    </NotAuthorized>
+</AuthorizeView>

@@ -1,0 +1,18 @@
+﻿<AuthorizeView Roles="@Roles.Moderator">
+    <Authorized>
+        <MudDialog>
+            <DialogContent>
+                <MudForm Model="@SegmentViewModel" @ref="form" Validation="@(validator.ValidateModel)" ValidationDelay="0">
+                    <MudTextField T="string" @bind-Value="@SegmentViewModel.Title" Label="Title" For="@(() => SegmentViewModel.Title)" Immediate="true" />
+                </MudForm>
+            </DialogContent>
+            <DialogActions>
+                <MudButton OnClick="Cancel">Cancel</MudButton>
+                <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+            </DialogActions>
+        </MudDialog>
+    </Authorized>
+    <NotAuthorized>
+        <MudText Align="Align.Center" Typo="Typo.h4">You are not authorized.</MudText>
+    </NotAuthorized>
+</AuthorizeView>

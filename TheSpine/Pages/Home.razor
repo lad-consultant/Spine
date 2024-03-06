@@ -1,0 +1,28 @@
+﻿@page "/{slug?}"
+@page "/nodes/{nodeId}"
+@page "/nodes/{nodeId}/segments/{segmentId?}"
+
+@using TheSpine.Application.Features.Commands.Nodes;
+@using TheSpine.AppLibrary.Components.NodeTreeView;
+@{
+    var height = isModerator ? "calc(100% - 80px)" : "calc(100% - 40px)";
+    
+}
+
+<MudGrid Class="mt-3 h-100" Spacing="1">
+    <MudItem md="3" sm="4" xs="12">
+        <TreeViewComponent @ref=treeViewComponent Slug=@Slug NodeId=@NodeId SegmentId="@SegmentId"  SelectedNodeChangedEventCallback="SelectedNodeChangedEvent"/>
+    </MudItem>
+
+    <MudItem md="9" sm="8" xs="12">
+        <MudPaper>
+            <MudPaper Class="px-2">
+                <MudBreadcrumbs Items="breadcrumbs" Class="mb-2" MaxItems="8" Separator="-"></MudBreadcrumbs>
+            </MudPaper>
+        </MudPaper>
+        @if (selectedNode != null)
+        {
+            <SegmentItemsDataGrid @ref=segmentItemsDataGrid LeafNode="@selectedNode" SelectedItemId="@SegmentId" />
+        }
+    </MudItem>
+</MudGrid>

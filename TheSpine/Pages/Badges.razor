@@ -1,0 +1,85 @@
+﻿@page "/badges"
+@using TheSpine.Application.Features.Commands.Nodes;
+
+<div class="container">
+    <div class="master-component">
+        <div class="master-content">
+            <MudPaper Height="100%" Width="100%">
+                <MudContainer Fixed="true" Class="align-content-center justify-center" Style="margin: 0px">
+                    @if (isLoading)
+                    {
+                        <NodesSkeleton />
+                    }
+                    else
+                    {
+                        <MudChipSet Filter="true" Style="display: inline-grid" SelectedChipChanged="SelectedChipChangedEventHandler" Mandatory="true">
+                            <AuthorizeView Roles="@Roles.Moderator" Context="_context">
+                                <MudChip Class="my-3" Style="width: 160px" Size="Size.Large" Text="black" CheckedIcon="" OnClick="(() => AddNode())">
+                                    <MudIcon Icon="@Icons.Material.Filled.Add" />
+                                    Add new
+                                </MudChip>
+                            </AuthorizeView>
+                            <MudDropContainer @ref="nodeDropContainer" T="NodeViewModel" Items="ParentNodes" ItemsSelector="@((item,dropzone) => item.Title != "")" ItemDropped="NodeDropped" ItemIsDisabled="IsDragAndDropDisabled">
+                                <ChildContent>
+                                    <MudDropZone T="NodeViewModel" Identifier="DZ1" AllowReorder="true" />
+                                </ChildContent>
+                                <ItemRenderer>
+                                    <MudChip Class="my-3" Style="width: 160px" Value=@context Size="Size.Large" Text="green" Color="Color.Success" CheckedIcon=@MudBlazor.Icons.Material.Filled.ArrowRightAlt>
+                                        @context.Title
+                                        <AuthorizeView Roles="@Roles.Moderator" Context="_context">
+                                            @if (selectedNodeId == context.Id)
+                                            {
+                                                <MudIconButton Icon="@Icons.Filled.Edit" Size="@Size.Small" Color="@Color.Success" OnClick="(() => EditNode(context))"></MudIconButton>
+                                                <MudIconButton Icon="@Icons.Filled.Delete" Size="@Size.Small" Color="@Color.Success" OnClick="(() => DeleteNode(context))"></MudIconButton>
+                                            }
+                                        </AuthorizeView>
+                                    </MudChip>
+                                </ItemRenderer>
+                            </MudDropContainer>
+                        </MudChipSet>
+                        <MudChipSet @ref="mudChipSetLeaf" Filter="true" Style="display: inline-grid" SelectedChipChanged="SelectedLeafChipChangedEventHandler" Mandatory="true">
+                            @if (selectedNodeId > 0)
+                            {
+                                <AuthorizeView Roles="@Roles.Moderator" Context="_context">
+                                    <MudChip Class="my-3" Style="width: 160px" Size="Size.Large" Text="black" CheckedIcon="" OnClick="(() => AddNode(selectedNodeId))">
+                                        <MudIcon Icon="@Icons.Material.Filled.Add" />
+                                        Add new
+                                    </MudChip>
+                                </AuthorizeView>
+                            }
+                            <MudDropContainer @ref="leafDropContainer" T="NodeViewModel" Items="LeafNodes" ItemsSelector="@((item,dropzone) => item.Title != "")" ItemDropped="LeafDropped" ItemIsDisabled="IsDragAndDropDisabled">
+                                <ChildContent>
+                                    <MudDropZone T="NodeViewModel" Identifier="DZ2" AllowReorder="true"></MudDropZone>
+                                </ChildContent>
+                                <ItemRenderer>
+                                    <MudChip Class="my-3" Style="width: 160px" Value=@context Size="Size.Large" Text="blue" Color="Color.Info" CheckedIcon=@MudBlazor.Icons.Material.Filled.ArrowRightAlt>
+                                        @context.Title
+                                        <AuthorizeView Roles="@Roles.Moderator" Context="_context">
+                                            @if (selectedLeafNode != null && selectedLeafNode.Id == context.Id)
+                                            {
+                                                <MudIconButton Icon="@Icons.Filled.Edit" Size="@Size.Small" Color="@Color.Info" OnClick="(() => EditNode(context))"></MudIconButton>
+                                                <MudIconButton Icon="@Icons.Filled.Delete" Size="@Size.Small" Color="@Color.Info" OnClick="(() => DeleteNode(context))"></MudIconButton>
+                                            }
+                                        </AuthorizeView>
+                                    </MudChip>
+                                </ItemRenderer>
+                            </MudDropContainer>
+                        </MudChipSet>
+                    }
+                </MudContainer>
+            </MudPaper>
+        </div>
+    </div>
+    <div class="detail-component">
+        <div class="detail-content">
+            @if (mudChipSetLeaf != null && mudChipSetLeaf.SelectedValues.Any())
+            {
+                <MudPaper>
+                    <SegmentItemsDataGrid Rows="@rows" LeafNode="@selectedLeafNode" />
+                </MudPaper>
+            }
+        </div>
+    </div>
+</div>
+
+

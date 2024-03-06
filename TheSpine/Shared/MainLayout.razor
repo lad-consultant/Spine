@@ -1,0 +1,85 @@
+﻿@inherits LayoutComponentBase
+<MudThemeProvider Theme="MyCustomTheme" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout Class="bg-gray">
+    <MudAppBar Elevation="0" Class="docs-appbar" Style="background:white;">
+        <MudHidden Breakpoint="Breakpoint.MdAndUp">
+            <MudIconButton OnClick="ToggleDrawer" Icon="@Icons.Material.Rounded.Notes" Edge="Edge.Start" />
+            <MudItem lg="4" md="8" sm="12" Class="pb-2">
+                <SearchBar />
+            </MudItem>
+        </MudHidden>
+
+        <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
+            <MudLink Href="/">
+                <MudImage Src="_content/TheSpine.AppLibrary/images/LEO-A-DALY-Flag.jpg" Height="75" Class="mr-2"></MudImage>
+            </MudLink>
+            <MudItem lg="4" md="8" sm="12" Class="pb-2">
+                <SearchBar />
+            </MudItem>
+            @if (isModerator)
+            {
+                <MudItem>
+                    <MudButton Href="/activities" Color="Color.Inherit" Variant="Variant.Text">Analytics</MudButton>
+                </MudItem>
+            }
+        </MudHidden>
+        <MudSpacer />
+    </MudAppBar>
+    @if (isModerator)
+    {
+        <MudDrawer Open="@_drawerOpen" ClipMode="DrawerClipMode.Always" Variant="DrawerVariant.Responsive" OpenChanged="OnDrawerOpenChanged" Elevation="0" Breakpoint="Breakpoint.MdAndUp">
+            <MudNavMenu Color="Color.Primary" Margin="Margin.Dense" Rounded="true" Class="pa-2">
+                <MudNavLink Href="/activities">Analytics</MudNavLink>
+            </MudNavMenu>
+        </MudDrawer>
+    }
+
+    <MudMainContent Class="pt-16 px-3 h-100 bg-gray h-100">
+        @Body
+        <MudScrollToTop TopOffset="400" Style="z-index:2000;">
+            <MudFab Icon="@Icons.Material.Filled.KeyboardArrowUp" Color="Color.Primary" />
+        </MudScrollToTop>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    MudTheme MyCustomTheme = Theme.CustomPageTheme();
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
+    private bool _drawerOpen = false;
+    private bool _topMenuOpen = true;
+    private bool isModerator = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (authenticationState is not null)
+        {
+            var authState = await authenticationState;
+            var user = authState?.User;
+
+            if (user?.Identity is not null && user.Identity.IsAuthenticated && user.IsInRole(Roles.Moderator))
+            {
+                isModerator = true;
+            }
+        }
+
+        base.OnInitialized();
+    }
+
+    private void ToggleDrawer()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+    private void OnDrawerOpenChanged(bool value)
+    {
+        _topMenuOpen = false;
+        _drawerOpen = value;
+        StateHasChanged();
+    }
+}

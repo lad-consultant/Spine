@@ -1,0 +1,38 @@
+﻿<MudOverlay Visible="@loading" DarkBackground="true" Absolute="true">
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+</MudOverlay>
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.body1" Style="font-size: 18px">@path - <b>@ViewModel.Title</b></MudText>
+    </TitleContent>
+    <DialogContent>
+        @if (!infoViewModels.Any())
+        {
+            <MudText>No content.</MudText>
+        }
+        else
+        {
+            <MudList>
+                @foreach (var vm in infoViewModels)
+                {
+                    <MudListItem>
+                        <ErrorBoundary>
+                            <ChildContent>
+                                <ItemDetailedInformation ViewModel="vm" OnChangeEventCallback="OnChangeEventCallbackEventHandler" OnEnterEditState="OnEnterEditStateEventHandler" />
+                            </ChildContent>
+                            <ErrorContent>
+                                <MudText Color="Color.Error">Invalid item details</MudText>
+                            </ErrorContent>
+                        </ErrorBoundary>
+                    </MudListItem>
+                }
+            </MudList>
+        }
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Close">Close</MudButton>
+        <AuthorizeView Roles="@Roles.Moderator">
+            <MudButton Variant="Variant.Filled" Color="Color.Tertiary" OnClick="CreateNewInfoPlaceHolder" Disabled="@IsAnyViewModelInEdit()">Add new</MudButton>
+        </AuthorizeView>
+    </DialogActions>
+</MudDialog>

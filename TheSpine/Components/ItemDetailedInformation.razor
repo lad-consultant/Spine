@@ -1,0 +1,74 @@
+﻿<MudCard id="@ViewModel.HtmlIdentifier">
+    <MudCardHeader>
+        <CardHeaderContent>
+			<MudText Typo="Typo.h6">@ViewModel.Title</MudText>
+        </CardHeaderContent>
+        <CardHeaderActions>
+            <AuthorizeView Roles="@Roles.Moderator">
+				@if (!ViewModel.IsEditState)
+				{
+					<MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" OnClick="OnEditClicked" Disabled="@(!ViewModel.CanEdit)"/>
+					<MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Secondary" OnClick="OnDeleteClicked" Disabled="@(!ViewModel.CanEdit)" />
+				}
+				else
+				{
+					<MudIconButton Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" OnClick="OnConfirmChangesClicked" />
+					<MudIconButton Icon="@Icons.Material.Filled.Cancel" Color="Color.Surface" OnClick="OnCancelClicked" />
+				}
+            </AuthorizeView>
+        </CardHeaderActions>
+    </MudCardHeader>
+    <MudCardContent>
+        @if (ViewModel.IsEditState)
+        {
+			<MudForm Model="@ViewModel" @ref="form" Validation="@(validator.ValidateModel)" ValidationDelay="0">
+				<MudTextField T="string" @bind-Value="@ViewModel.Title" Label="Title" For="@(() => ViewModel.Title)" Placeholder="Title" Immediate="true" Class="mb-2"/>
+			</MudForm>
+			<QuillEditor @ref="@QuillHtml">
+				<ToolbarContent>
+					<select class="ql-header">
+						<option selected=""></option>
+						<option value="1"></option>
+						<option value="2"></option>
+						<option value="3"></option>
+						<option value="4"></option>
+						<option value="5"></option>
+					</select>
+					<span class="ql-formats">
+						<button class="ql-bold"></button>
+						<button class="ql-italic"></button>
+						<button class="ql-underline"></button>
+						<button class="ql-strike"></button>
+					</span>
+					<span class="ql-formats">
+						<select class="ql-color"></select>
+						<select class="ql-background"></select>
+					</span>
+					<span class="ql-formats">
+						<button class="ql-list" value="ordered"></button>
+						<button class="ql-list" value="bullet"></button>
+					</span>
+					<span class="ql-formats">
+						<button class="ql-link"></button>
+					</span>
+				</ToolbarContent>
+				<EditorContent>
+					@if (!string.IsNullOrWhiteSpace(ViewModel.TextContent))
+					{
+						@((MarkupString)ViewModel.HtmlContent)
+					}
+				</EditorContent>
+			</QuillEditor>
+			<MudText Align="Align.Left" Color="Color.Error">@contentValidationMessage</MudText>
+        }
+        else
+        {
+			<MudContainer Class="mx-3">
+				@if (!string.IsNullOrWhiteSpace(ViewModel.TextContent) && !string.IsNullOrWhiteSpace(ViewModel.HtmlContent))
+				{
+					@((MarkupString)ViewModel.HtmlContent)
+				}
+			</MudContainer>
+        }
+    </MudCardContent>
+</MudCard>

@@ -1,6 +1,7 @@
 ﻿@if (isLoading)
 {
-    <AuthorizeView Roles="@Roles.Moderator">
+    @* <AuthorizeView >Roles="@Roles.Moderator" *@
+    <AuthorizeView >
         <MudPaper Class="pa-2 mb-3">
             <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="35px" />
         </MudPaper>
@@ -11,7 +12,7 @@
 }
 else
 {
-    <AuthorizeView Roles="@Roles.Moderator">
+     <AuthorizeView Roles="@Roles.Moderator"> 
         <MudPaper Class="pa-2 mb-3">
             <MudStack Row="true" Class="justify-end">
                 <MudButton OnClick="AddRoot" Variant="Variant.Filled" Color="Color.Tertiary" StartIcon="@Icons.Material.Filled.Add">Add new node</MudButton>

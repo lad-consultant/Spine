@@ -4,7 +4,7 @@
 			<MudText Typo="Typo.h6">@ViewModel.Title</MudText>
         </CardHeaderContent>
         <CardHeaderActions>
-            <AuthorizeView Roles="@Roles.Moderator">
+             <AuthorizeView Roles="@Roles.Moderator"> 
 				@if (!ViewModel.IsEditState)
 				{
 					<MudIconButton Icon="@Icons.Material.Filled.Edit" Color="Color.Primary" OnClick="OnEditClicked" Disabled="@(!ViewModel.CanEdit)"/>

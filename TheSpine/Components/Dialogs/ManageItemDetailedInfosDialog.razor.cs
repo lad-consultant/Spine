@@ -9,29 +9,23 @@ using TheSpine.Application.Features.Queries.GetItemDetailedInfos;
 namespace TheSpine.AppLibrary.Components.Dialogs
 {
     public partial class ManageItemDetailedInfosDialog
-	{
+    {
         private List<ItemDetailedInfoViewModel> infoViewModels = new List<ItemDetailedInfoViewModel>(10);
 
-		private CancellationTokenSource cancelationTokenSource = new CancellationTokenSource();
+        private CancellationTokenSource cancelationTokenSource = new CancellationTokenSource();
         private bool loading = true;
 
-        [Inject]
-        public IMediator Mediator { get; set; }
+        [Inject] public IMediator Mediator { get; set; }
 
-        [Inject]
-        public IDialogService DialogService { get; set; }
+        [Inject] public IDialogService DialogService { get; set; }
 
-        [Inject]
-        public IJSRuntime JSRuntime { get; set; }
+        [Inject] public IJSRuntime JSRuntime { get; set; }
 
-        [CascadingParameter]
-        public MudDialogInstance MudDialog { get; set; }
+        [CascadingParameter] public MudDialogInstance MudDialog { get; set; }
 
-        [Parameter]
-        public SegmentItemViewModel ViewModel { get; set; }
+        [Parameter] public SegmentItemViewModel ViewModel { get; set; }
 
-        [Parameter]
-        public IEnumerable<string> Path { get; set; }
+        [Parameter] public IEnumerable<string> Path { get; set; }
 
         private string path = string.Empty;
 
@@ -49,61 +43,81 @@ namespace TheSpine.AppLibrary.Components.Dialogs
         }
 
         protected override async Task OnInitializedAsync()
-		{
-			await InitializeData();
+        {
+            await InitializeData();
 
-			loading = false;
+            loading = false;
         }
 
         private async Task OnChangeEventCallbackEventHandler(int args)
         {
             await InitializeData();
 
-			StateHasChanged();
+            StateHasChanged();
         }
 
         private async Task InitializeData()
         {
             path = string.Join(" - ", Path);
-			infoViewModels = (await Mediator.Send(new GetItemDetailedInfosQuery { ViewModel = ViewModel }, cancelationTokenSource.Token)).ToList();
+            infoViewModels = (await Mediator.Send(new GetItemDetailedInfosQuery { ViewModel = ViewModel },
+                cancelationTokenSource.Token)).ToList();
 
-			foreach (var info in infoViewModels)
-			{
-				info.CanEdit = true;
-			}
-		}
+            foreach (var info in infoViewModels)
+            {
+                info.CanEdit = true;
+            }
+        }
 
         private void OnEnterEditStateEventHandler(int id)
         {
             // Disable all other info edit buttons.
-			foreach (var info in infoViewModels)
-			{
-				if (info.Id != id)
-				{
-					info.CanEdit = false;
-				}
-			}
+            foreach (var info in infoViewModels)
+            {
+                if (info.Id != id)
+                {
+                    info.CanEdit = false;
+                }
+            }
 
-			StateHasChanged();
-		}
+            StateHasChanged();
+        }
 
-		private bool IsAnyViewModelInEdit()
-		{
+        private bool IsAnyViewModelInEdit()
+        {
             return infoViewModels.Any(vm => vm.IsEditState);
-		}
+        }
 
-		private async Task CreateNewInfoPlaceHolder()
+        private async Task CreateNewInfoPlaceHolder()
         {
             foreach (var info in infoViewModels)
             {
                 info.CanEdit = false;
             }
 
-            var newViewModel = new ItemDetailedInfoViewModel() { IsEditState = true, SegmentItemId = ViewModel.Id, HtmlIdentifier = Guid.NewGuid().ToString() };
+            var newViewModel = new ItemDetailedInfoViewModel()
+                { IsEditState = true, SegmentItemId = ViewModel.Id, HtmlIdentifier = Guid.NewGuid().ToString() };
             infoViewModels.Add(newViewModel);
-            
+
             StateHasChanged();
-		}
+        }
+
+        private void ShowMoreInfo()
+        {
+            DialogParameters parameters = new DialogParameters
+            {
+                //add params if needed
+            };
+
+            DialogService.Show<ManageItemMoreInfosDialog>(string.Empty,
+                parameters,
+                options: new()
+                {
+                    CloseOnEscapeKey = false,
+                    DisableBackdropClick = true,
+                    MaxWidth = MaxWidth.Large,
+                    FullWidth = true
+                });
+        }
 
         private void Close()
         {

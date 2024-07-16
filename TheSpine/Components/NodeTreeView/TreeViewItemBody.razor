@@ -1,7 +1,6 @@
 ﻿<div style="display: grid; grid-template-columns: 1fr auto; align-items: center; width: 100%" @onmousedown="OnMouseDown">
     <MudText Class="pa-1">@Context.Title</MudText>
-    <AuthorizeView Roles="@Roles.Moderator">
-        
+     <AuthorizeView Roles="@Roles.Moderator"> 
             <MudMenu Icon="@Icons.Material.Filled.MoreVert" AnchorOrigin="Origin.TopRight">
                 <MudMenuItem OnClick="(() => AddNode(Context.Id))">
                     <MudStack Row=true Class="align-center">

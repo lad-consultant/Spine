@@ -19,23 +19,23 @@
             <MudItem lg="4" md="8" sm="12" Class="pb-2">
                 <SearchBar />
             </MudItem>
-            @if (isModerator)
-            {
+            @* @if (isModerator) *@
+            @* { *@
                 <MudItem>
                     <MudButton Href="/activities" Color="Color.Inherit" Variant="Variant.Text">Analytics</MudButton>
                 </MudItem>
-            }
+            @* } *@
         </MudHidden>
         <MudSpacer />
     </MudAppBar>
-    @if (isModerator)
-    {
+    @* @if (isModerator) *@
+    @* { *@
         <MudDrawer Open="@_drawerOpen" ClipMode="DrawerClipMode.Always" Variant="DrawerVariant.Responsive" OpenChanged="OnDrawerOpenChanged" Elevation="0" Breakpoint="Breakpoint.MdAndUp">
             <MudNavMenu Color="Color.Primary" Margin="Margin.Dense" Rounded="true" Class="pa-2">
                 <MudNavLink Href="/activities">Analytics</MudNavLink>
             </MudNavMenu>
         </MudDrawer>
-    }
+    @* } *@
 
     <MudMainContent Class="pt-16 px-3 h-100 bg-gray h-100">
         @Body

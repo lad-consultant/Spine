@@ -10,21 +10,21 @@
 @if (isLoading)
 {
     <MudPaper Class="d-flex justify-center pa-8">
-        <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+        <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
     </MudPaper>
 }
 else if (rows != null && rows.Any())
 {
     <MudPaper>
         <MudTable Hover="true"
-              Breakpoint="Breakpoint.Sm"
-              FixedHeader="true"
-              Items="@rows"
-              GroupBy="@groupDefinition"
-              GroupHeaderStyle="background-color:var(--mud-palette-background-grey)"
-              GroupFooterClass="mb-4"
-              ReadOnly="true"
-              Dense=true>
+                  Breakpoint="Breakpoint.Sm"
+                  FixedHeader="true"
+                  Items="@rows"
+                  GroupBy="@groupDefinition"
+                  GroupHeaderStyle="background-color:var(--mud-palette-background-grey)"
+                  GroupFooterClass="mb-4"
+                  ReadOnly="true"
+                  Dense=true>
             <HeaderContent>
                 <MudTh></MudTh>
                 <MudTh>Rating</MudTh>
@@ -40,35 +40,35 @@ else if (rows != null && rows.Any())
                 <AuthorizeView Roles="@Roles.Moderator" Context="_context">
                     <Authorized>
                         <MudTh Class="mud-table-cell-custom-group" colspan="7">@($"{context.Key}")</MudTh>
-                        </Authorized>
-                        <NotAuthorized>
-                            <MudTh Class="mud-table-cell-custom-group" colspan="6">@($"{context.Key}")</MudTh>
-                        </NotAuthorized>
-                    </AuthorizeView>
-                </GroupHeaderTemplate>
-                <RowTemplate>
-                    <MudTd DataLabel="Title">
-                        <MudLink OnClick="@(() => OnSelectedItem(@context))">@context.Title</MudLink>
-                    </MudTd>
-                    <MudTd DataLabel="Rating">
-                        <MudRating Size="Size.Medium" SelectedValue=@context.Rating ReadOnly="true" />
-                    </MudTd>
-                    <MudTd DataLabel="Ease of Use">
-                        @if (context.EaseOfUse == Core.Enums.EaseOfUse.Excelent)
+                    </Authorized>
+                    <NotAuthorized>
+                        <MudTh Class="mud-table-cell-custom-group" colspan="6">@($"{context.Key}")</MudTh>
+                    </NotAuthorized>
+                </AuthorizeView>
+            </GroupHeaderTemplate>
+            <RowTemplate>
+                <MudTd DataLabel="Title">
+                    <MudLink OnClick="@(() => OnSelectedItem(@context))">@context.Title</MudLink>
+                </MudTd>
+                <MudTd DataLabel="Rating">
+                    <MudRating Size="Size.Medium" SelectedValue=@context.Rating ReadOnly="true"/>
+                </MudTd>
+                <MudTd DataLabel="Ease of Use">
+                    @if (context.EaseOfUse == Core.Enums.EaseOfUse.Excelent)
                     {
-                        <MudIcon Icon="@IconsLibrary.LaughingEmoticonFilled" Style="@($"color:{Colors.Green.Accent4};")" Size="Size.Large" />
+                        <MudIcon Icon="@IconsLibrary.LaughingEmoticonFilled" Style="@($"color:{Colors.Green.Accent4};")" Size="Size.Large"/>
                     }
                     else if (context.EaseOfUse == Core.Enums.EaseOfUse.Good)
                     {
-                        <MudIcon Icon="@IconsLibrary.HappyEmoticonFilled" Style="@($"color:{Colors.Yellow.Default};")" Size="Size.Large" />
+                        <MudIcon Icon="@IconsLibrary.HappyEmoticonFilled" Style="@($"color:{Colors.Yellow.Default};")" Size="Size.Large"/>
                     }
                     else if (context.EaseOfUse == Core.Enums.EaseOfUse.Average)
                     {
-                        <MudIcon Icon="@IconsLibrary.NeutralEmoticonFilled" Style="@($"color:{Colors.Yellow.Darken3};")" Size="Size.Large" />
+                        <MudIcon Icon="@IconsLibrary.NeutralEmoticonFilled" Style="@($"color:{Colors.Yellow.Darken3};")" Size="Size.Large"/>
                     }
                     else
                     {
-                        <MudIcon Icon="@IconsLibrary.AngryEmoticonFilled" Style="@($"color:{Colors.DeepOrange.Accent4};")" Color="Color.Error" Size="Size.Large" />
+                        <MudIcon Icon="@IconsLibrary.AngryEmoticonFilled" Style="@($"color:{Colors.DeepOrange.Accent4};")" Color="Color.Error" Size="Size.Large"/>
                     }
                 </MudTd>
                 <MudTd DataLabel="Licensing">@context.Licensing</MudTd>
@@ -77,8 +77,8 @@ else if (rows != null && rows.Any())
                 <AuthorizeView Roles="@Roles.Moderator" Context="_context">
                     <MudTd DataLabel="">
                         <MudStack Row=true Spacing="0">
-                            <MudIconButton OnClick="@(()=>Edit(@context))" Size="Size.Medium" Color="Color.Primary" Icon="@Icons.Material.Filled.Edit" />
-                            <MudIconButton OnClick="@(()=>Delete(@context))" Size="Size.Medium" Color="Color.Secondary" Icon="@Icons.Material.Filled.Delete" />
+                            <MudIconButton OnClick="@(() => Edit(@context))" Size="Size.Medium" Color="Color.Primary" Icon="@Icons.Material.Filled.Edit"/>
+                            <MudIconButton OnClick="@(() => Delete(@context))" Size="Size.Medium" Color="Color.Secondary" Icon="@Icons.Material.Filled.Delete"/>
                         </MudStack>
                     </MudTd>
                 </AuthorizeView>

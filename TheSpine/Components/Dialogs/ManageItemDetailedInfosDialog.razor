@@ -30,8 +30,9 @@
         }
     </DialogContent>
     <DialogActions>
+        <MudButton Color="Color.Tertiary" OnClick="ShowMoreInfo" Style="margin-right: auto">More</MudButton>
         <MudButton OnClick="Close">Close</MudButton>
-        <AuthorizeView Roles="@Roles.Moderator">
+      <AuthorizeView Roles="@Roles.Moderator">
             <MudButton Variant="Variant.Filled" Color="Color.Tertiary" OnClick="CreateNewInfoPlaceHolder" Disabled="@IsAnyViewModelInEdit()">Add new</MudButton>
         </AuthorizeView>
     </DialogActions>

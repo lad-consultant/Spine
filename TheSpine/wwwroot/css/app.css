@@ -47,6 +47,17 @@ li.mud-breadcrumb-item.mud-disabled > a {
         height: 350px;
     }
 }
+.more-info-dialog{
+    .mud-list.mud-list-padding{
+        padding-top:0;
+        padding-bottom:0;
+    }
+    .mud-list-item{
+        padding-top:0;
+        padding-bottom:0;
+    }
+}
+
 
 /*@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 

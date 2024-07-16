@@ -1,0 +1,44 @@
+﻿<MudOverlay DarkBackground="true" Absolute="true">
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true"/>
+</MudOverlay>
+<MudDialog Class="more-info-dialog">
+    <TitleContent>
+        <MudText Typo="Typo.body1" Style="font-size: 18px"> More information <MudIcon Icon="@Icons.Material.Filled.Info" Color="Color.Info"/> </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudText Typo="Typo.h6">Overview</MudText>
+        <MudText >Why to Use?</MudText>
+        <MudList >
+            <MudListItem>Can launch directly from Revit or Sketchup.</MudListItem>
+            <MudListItem>Easy to use and quick to run.</MudListItem>
+            <MudListItem>Allows easy design validation from desktop or VR</MudListItem>
+        </MudList>
+        <MudText Typo="Typo.body2">When to Use?</MudText>
+        <MudList>
+            <MudListItem>Daily design validation.</MudListItem>
+            <MudListItem>Live VR Demos</MudListItem>
+            <MudListItem>Recorded Fly-throughs</MudListItem>
+        </MudList>
+        <MudText >Plug-In Supported for:</MudText>
+        <MudList>
+            <MudListItem>SketchUp</MudListItem>
+            <MudListItem>Revit</MudListItem>
+            <MudListItem>BIM Track Export for Issue Tracking</MudListItem>
+        </MudList>
+        <MudText >Next Steps</MudText>
+        <MudList>
+            <MudListItem>Confirm you have the Plug-In Installed: If not, make an IT Request with a quick email.</MudListItem>
+        </MudList>
+        <MudText>Training Options:</MudText>
+        <MudList>
+            <MudListItem>On Your Own Time – Pinnacle</MudListItem>
+            <MudListItem>Just in Time for your Team – Request from a DPM or SME</MudListItem>
+            <MudListItem>Lunch in Learn – Request or Host One to Share what your Learn!</MudListItem>
+        </MudList>
+        <MudText Typo="Typo.overline">Take a Peek:</MudText>
+        <MudLink href="#">Click here to see screenshot(s)</MudLink>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Close">Close</MudButton>
+    </DialogActions>
+</MudDialog>
